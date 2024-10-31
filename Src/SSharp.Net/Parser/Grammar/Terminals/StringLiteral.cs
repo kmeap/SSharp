@@ -1,5 +1,5 @@
 /*
- * Copyright © 2011, Petro Protsyk, Denys Vuika
+ * Copyright ?2011, Petro Protsyk, Denys Vuika
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -39,6 +39,7 @@ namespace Scripting.SSharp.Parser.FastGrammar
     {
       bool isVerbatim = false;
       int start = source.Position;
+      char quoteChar = char.MinValue;
 
       if (source.CurrentChar == '@')
       {
@@ -49,6 +50,7 @@ namespace Scripting.SSharp.Parser.FastGrammar
 
       if (IsCurrentQuote(source))
       {
+        quoteChar = source.CurrentChar;
         source.Position++;
         start++;
       }
@@ -69,7 +71,18 @@ namespace Scripting.SSharp.Parser.FastGrammar
             return null;
         }
 
-        if (IsCurrentQuote(source)) break;
+        if (source.CurrentChar == quoteChar)
+        {
+          if (!isVerbatim)
+            break;
+
+          source.Position++;
+          if (source.EOF() || source.CurrentChar != quoteChar)
+          {
+            source.Position--;
+            break;
+          }
+        }
         
         source.Position++;
       }
@@ -84,6 +97,8 @@ namespace Scripting.SSharp.Parser.FastGrammar
       //TODO: handle this in escape processing
       if (!isVerbatim)
         body = body.Replace("\\'", "'").Replace("\\\"", "\"").Replace("\\\\", "\\");
+      else
+        body = body.Replace("".PadRight(2, quoteChar), quoteChar.ToString());
 
       TokenAst token = TokenAst.Create(this, context, source.TokenStart, lexeme, body);     
       return token;
