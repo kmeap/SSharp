@@ -24,6 +24,8 @@
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
 
     <Configurations>Debug;Release</Configurations>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\..\..\..\..\KMMBP\Common\Certificates\KMEAP.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
 
   <ItemGroup>
