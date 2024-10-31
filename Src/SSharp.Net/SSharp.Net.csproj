@@ -2,7 +2,7 @@
 
   <PropertyGroup Condition=" '$(ForNuget)' == 'true' ">
     <!-- https://docs.microsoft.com/en-us/dotnet/standard/frameworks -->
-    <TargetFrameworks>netcoreapp3.1;net48;net5.0</TargetFrameworks>
+    <TargetFrameworks>netcoreapp3.1;net48;net5.0;net40</TargetFrameworks>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(ForNuget)' == '' ">
@@ -30,7 +30,7 @@
     <None Include="..\..\LICENSE" Pack="true" PackagePath="" />
   </ItemGroup>
 
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net48' ">
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net48' Or '$(TargetFramework)' == 'net40' ">
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
 
